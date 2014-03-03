@@ -7,7 +7,7 @@ class Mod:
         if n > 0 and isinstance(n, int):
             Mod.M = n
         else:
-            print "Error: Mod must be a positive integer!"
+            raise Exception("Modulus must be a positive integer.")
     
     @staticmethod
     def math_mod(a):
@@ -84,6 +84,8 @@ class Mod:
             return self.value != Mod.math_mod(m)
 
     def inverse(self):
+        if self.value == 0:
+            raise Exception("Inverse of 0 is undefined.")
         return Mod(Mod.egcd(Mod.M, self.value)[2])
 
 class PolyMod:
@@ -98,7 +100,11 @@ class PolyMod:
                 if i != j:
                     num *= PolyMod([-points[j][0], 1])
                     den *= points[i][0]-points[j][0]
-            num *= den.inverse()
+            try:
+                num *= den.inverse()
+            except Exception:
+                print "Caught improper inverse. Non-unique point is likely. Please correct input."
+                return None
             deltas.append(num)
         for i in range(len(points)):
             s += deltas[i]*points[i][1]

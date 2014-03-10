@@ -86,7 +86,11 @@ class Mod:
     def inverse(self):
         if self.value == 0:
             raise Exception("Inverse of 0 is undefined.")
-        return Mod(Mod.egcd(Mod.M, self.value)[2])
+        val = Mod.egcd(Mod.M, self.value)
+        if val[0] == 1:
+            return Mod(val[2])
+        else:
+            raise Exception("Mod and value are not co-prime. Inverse is undefined.")
 
 class PolyMod:
     @staticmethod
@@ -103,7 +107,7 @@ class PolyMod:
             try:
                 num *= den.inverse()
             except Exception:
-                print "Caught improper inverse. Non-unique point is likely. Please correct input."
+                raise Exception("Caught improper inverse. Interpolation impossible.")
                 return None
             deltas.append(num)
         for i in range(len(points)):
@@ -216,6 +220,17 @@ class PolyMod:
                 return len(self.terms)-1-c
             c += 1
         return 0
+
+    def __eq__(self, p):
+        j = 0
+        for i in p.terms:
+            if self.terms[j] != i:
+                return False
+            j += 1
+        return True
+
+    def __ne__(self, p):
+        return not (self == p)
     
     def zero(self):
         for i in self.terms:

@@ -92,7 +92,6 @@ class Polynomial:
             if not p.zero():
                 q = Polynomial()
                 r = Polynomial(self.terms)
-                print r
                 while not r.zero() and r.degree >= p.degree:
                     t_c = r[r.degree] / p[p.degree]
                     t_x = r.degree - p.degree
@@ -114,7 +113,6 @@ class Polynomial:
             if not p.zero():
                 q = Polynomial()
                 r = Polynomial(self.terms)
-                print r
                 while not r.zero() and r.degree >= p.degree:
                     t_c = r[r.degree] / p[p.degree]
                     t_x = r.degree - p.degree
